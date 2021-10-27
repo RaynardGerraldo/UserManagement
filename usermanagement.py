@@ -83,28 +83,31 @@ def change_fullname(username):
 
 
 # ----MENU----
+def menu():
+    choices = ["create","delete","modify"]
 
-choices = ["create","delete","modify"]
+    username = input("Input user name: ")
+    if not bool(re.match(r"^[a-z][-a-z0-9]*$", username)):
+        print("Invalid username format, starts with alphabet and followed by only alphabets and numbers.")
+        sys.exit()
 
-username = input("Input user name: ")
-if not bool(re.match(r"^[a-z][-a-z0-9]*$", username)):
-    print("Invalid username format, starts with alphabet and followed by only alphabets and numbers.")
-    sys.exit()
+    prompt = int(input("Choose option: 0 for create, 1 for delete, 2 for modify: "))
 
-prompt = int(input("Choose option: 0 for create, 1 for delete, 2 for modify: "))
-
-if prompt in range(0,3):
-    if choices[prompt] == "create":
-        adduser(input("Input full name here: "), username)
-    elif choices[prompt] == "delete":
-        removeuser(username)
+    if prompt in range(0,3):
+        if choices[prompt] == "create":
+            adduser(input("Input full name here: "), username)
+        elif choices[prompt] == "delete":
+            removeuser(username)
+        else:
+            modifyoptions = int(input("Choose option: 0 for lock user, 1 for unlock user, 2 for change real name/full name: "))
+            if modifyoptions == 0:
+                lock(username)
+            elif modifyoptions == 1:
+                unlock(username)
+            elif modifyoptions == 2:
+                change_fullname(username)
     else:
-        modifyoptions = int(input("Choose option: 0 for lock user, 1 for unlock user, 2 for change real name/full name: "))
-        if modifyoptions == 0:
-            lock(username)
-        elif modifyoptions == 1:
-            unlock(username)
-        elif modifyoptions == 2:
-            change_fullname(username)
-else:
-    print("Invalid choice")
+        print("Invalid choice")
+
+# call menu function
+menu()
