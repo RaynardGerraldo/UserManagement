@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-
-import os
+import sys
 import subprocess
 import random
 import crypt
 import pwd
-
-username = input("Input user name: ")
+import re
 
 # Check if user exists
 def exists(username):
@@ -25,8 +23,7 @@ def adduser(fullname, username):
     generate = ["sudo", "useradd","-p", encrypted , "-c", full, username]
 
     if not exists(username):
-        add = subprocess.Popen(generate, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    
+        add = subprocess.Popen(generate, stdout=subprocess.PIPE, stderr=subprocess.PIPE) 
         output,error = add.communicate()
 
         if add.returncode == 0:
@@ -89,6 +86,11 @@ def change_fullname(username):
 
 choices = ["create","delete","modify"]
 
+username = input("Input user name: ")
+if not bool(re.match(r"^[a-z][-a-z0-9]*$", username)):
+    print("Invalid username format, starts with alphabet and followed by only alphabets and numbers.")
+    sys.exit()
+
 prompt = int(input("Choose option: 0 for create, 1 for delete, 2 for modify: "))
 
 if prompt in range(0,3):
@@ -104,3 +106,5 @@ if prompt in range(0,3):
             unlock(username)
         elif modifyoptions == 2:
             change_fullname(username)
+else:
+    print("Invalid choice")
